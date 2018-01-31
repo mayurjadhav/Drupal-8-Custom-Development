@@ -1,0 +1,95 @@
+<?php
+
+/** 
+ * Install function for D8 Training Module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function d8_training_schema() {
+  $schema['employee'] = [
+    'description' => 'Table that contains employee data.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'description' => 'Unique ID of the employee table.',
+      ],
+      'name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Employee Name',
+      ],
+      'employee_id' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Employee ID',
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Employee email',
+      ],
+      'address' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Employee address',
+      ],
+      'gender' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'size' => 'tiny',
+        'default' => 0,
+        'description' => 'Gender field.',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'id' => ['id'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Add date of birth field column in employee table.
+ */
+function d8_training_update_8001(&$sandbox = NULL) {
+  // Get the database connection in object.
+  $database = \Drupal::database();
+
+  // Get the schema form database object.
+  $schema = $database->schema();
+
+  if ($schema->tableExists('employee')) {
+    // Define schema for date of birth field.
+    $dob = [
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'The Unix timestamp of user date of birth.',
+    ];
+    // Pass dob schema to column in employee table.
+    $schema->addField('employee', 'date_of_birth', $dob);
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function d8_training_uninstall() {
+  // Remove the Config values.
+  Drupal::configFactory()->getEditable('config.company_details')->delete();
+}

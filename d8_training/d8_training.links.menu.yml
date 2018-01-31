@@ -1,0 +1,15 @@
+d8_training.company_details:
+  title: 'Company Details'
+  description: 'Company Details'
+  route_name: d8_training.company_details
+  parent: system.admin_config
+  menu_name: d8_training
+  weight: 1
+  
+d8_training.employee_details:
+  title: 'Employee Details'
+  description: 'Employee Details'
+  route_name: d8_training.employee_details
+  parent: system.admin_content
+  menu_name: d8_training
+  weight: 1

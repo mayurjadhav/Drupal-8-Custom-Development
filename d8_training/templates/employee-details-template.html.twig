@@ -1,0 +1,18 @@
+<div class="common_form_wrapper">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    {{ form.name }}
+    {{ form.employee_id }}
+    {{ form.email }}
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    {{ form.address }}
+    {{ form.gender }}
+    {{ form.date_of_birth }}
+  </div>
+</div>
+{{ form.submit }}
+
+{{ form.form_build_id }} {# required #}
+{{ form.form_token }}{# required #}
+{{ form.form_id }} {# required #}
+{{ form.actions }} {# will render the action buttons in the form #}

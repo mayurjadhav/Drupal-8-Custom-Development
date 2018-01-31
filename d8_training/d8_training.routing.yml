@@ -1,0 +1,17 @@
+d8_training.company_details:
+  path: '/admin/config/company/details'
+  defaults:
+    _form: '\Drupal\d8_training\Form\CompanyDetails'
+    _title: 'Company Details'
+  options:
+     _admin_route: TRUE
+  requirements:
+    _permission: 'administer site configuration'
+
+d8_training.employee_details:
+  path: '/employee/details'
+  defaults:
+    _form: '\Drupal\d8_training\Form\EmployeeDetails'
+    _title: 'Employee Details'
+  requirements:
+   _custom_access: '\Drupal\d8_training\Controller\EmployeeDetails::access'

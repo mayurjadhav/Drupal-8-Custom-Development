@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Contains d8_training.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+* Implements hook_theme().
+*/
+function d8_training_theme($existing, $type, $theme, $path) {
+
+  return [
+    'employee_details_template' => [
+      'render element' => 'form',
+      'template' => 'employee-details-template',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function d8_training_form_node_employee_details_form_alter(&$form, FormStateInterface &$form_state, $form_id) {
+
+  // Add submit handler to store data in custom table.
+  foreach (array_keys($form['actions']) as $action) {
+    if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+      $form['actions'][$action]['#submit'][] = 'd8_training_store_employee_details_submit';
+    }
+  }
+  $form['actions']['submit']['#value'] = t('Save Employee Details');
+}
+
+/**
+ * @param $form
+ * @param FormStateInterface $form_state
+ */
+function d8_training_store_employee_details_submit(&$form, FormStateInterface &$form_state) {
+
+  // Get the submitted values from $form_state.
+  $values = $form_state->getValues();
+
+  // Collect the values which needs to store in custom table.
+  $details['name'] = $values['title'][0]['value'];
+  $details['employee_id'] = $values['field_employee_id'][0]['value'];
+  $details['email'] = $values['field_email'][0]['value'];
+  $details['address'] = $values['field_address'][0]['value'];
+  $details['gender'] = $values['field_gender'][0]['value'];
+  $details['date_of_birth'] = $values['field_date_of_birth'][0]['value']->format('Y-m-d');
+
+  //Save employee details using services method.
+  \Drupal::service('d8_training.employee_details')->StoreEmployeeDetails($details);
+
+  drupal_set_message('Employee Details has been stored successfully in custom table.');
+}
